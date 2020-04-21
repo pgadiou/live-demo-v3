@@ -1,0 +1,18 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: live_demo_2020
+    environment:
+      - APPLICATION_PORT=3310
+      - DATABASE_URL=postgres://forest:secret@host.docker.internal:5416/forest_demo
+      - DATABASE_SCHEMA=public
+      - DATABASE_SSL=false
+      - FOREST_AUTH_SECRET=0bacd8f784d09287ba6068add4435b69f10c9439e394d5978a32fc84bc1cea5f271b99fec1930e25ec2900991c23ad01
+      - FOREST_ENV_SECRET=e1884fbec8d20f1f64bd7b81c01e99dedc25ab0689d28aeeda512c3bfbf50ed3
+    ports:
+      - "3310:3310"
+    volumes:
+      - ./:/usr/src/app
