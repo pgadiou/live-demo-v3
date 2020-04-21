@@ -30,7 +30,10 @@ router.delete('/customers/:recordId', permissionMiddlewareCreator.delete(), (req
 // Get a list of Customers
 router.get('/customers', permissionMiddlewareCreator.list(), (request, response, next) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#get-a-list-of-records
-  next();
+  if (request.query.search) {
+    return next();
+  }
+  return response.send({"meta":{"count":0},"data":[]});
 });
 
 // Get a number of Customers

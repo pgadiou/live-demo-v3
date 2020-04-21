@@ -65,45 +65,39 @@ router.delete('/companies', permissionMiddlewareCreator.delete(), (request, resp
 });
 
 function uploadLegalDoc(companyId, doc, field) {
-	let id = uuid();
+  const id = uuid();
 
-	return new S3Helper().upload(doc, `livedemo/legal/${id}`)
-		.then(() => {
-			return models.companies.findById(companyId);
-		})
-		.then((company) => {
-			company[field] = id;
-			return company.save();
-		})
+  return new S3Helper().upload(doc, `livedemo/legal/${id}`)
+    .then(() => companies.findByPk(companyId))
     .then((company) => {
-      return models.documents.create({
-        file_id: company[field],
-        is_verified: true
-      });
-    });
+      company[field] = id;
+      console.log(`updated ${field})`, company[field]);
+      return company.save();
+    })
+    .catch((e) => e);
 }
 
 router.post('/actions/upload-legal-docs', permissionMiddlewareCreator.smartAction(), (req, res) => {
-    // Get the current company id
-    let companyId = req.body.data.attributes.ids[0];
+  // Get the current company id
+  const companyId = req.body.data.attributes.ids[0];
 
-    // Get the values of the input fields entered by the admin user.
-    let attrs = req.body.data.attributes.values;
-    let certificate_of_incorporation = attrs['Certificate of Incorporation'];
-    let proof_of_address = attrs['Proof of address'];
-    let company_bank_statement = attrs['Company bank statement'];
-    let passport_id = attrs['Valid proof of id'];
+  // Get the values of the input fields entered by the admin user.
+  const attrs = req.body.data.attributes.values;
+  const certificateOfIncorporation = attrs['Certificate of Incorporation'];
+  // const proofOfAddress = attrs['Proof of address'];
+  // const companyBankStatement = attrs['Company bank statement'];
+  const passportId = attrs['Valid proof of ID'];
 
-    return P.all([
-      uploadLegalDoc(companyId, certificate_of_incorporation, 'certificate_of_incorporation_id'),
-      uploadLegalDoc(companyId, proof_of_address, 'proof_of_address_id'),
-      uploadLegalDoc(companyId, company_bank_statement,'bank_statement_id'),
-      uploadLegalDoc(companyId, passport_id, 'passport_id'),
-    ])
+  P.all([
+    uploadLegalDoc(companyId, certificateOfIncorporation, 'certificateOfIncorporationId'),
+    uploadLegalDoc(companyId, proofOfAddress, 'proofOfAddressId'),
+    uploadLegalDoc(companyId, companyBankStatement,'bankStatementId'),
+    uploadLegalDoc(companyId, passportId, 'passportId'),
+  ])
     .then(() => {
       // Once the upload is finished, send a success message to the admin user in the UI.
-      res.send({ success: 'Legal documents are successfully uploaded.' });
+      return res.send({ success: 'Legal documents are successfully uploaded.' });
     });
-  });
+});
 
 module.exports = router;
