@@ -33,7 +33,7 @@ router.get('/customers', permissionMiddlewareCreator.list(), (request, response,
   if (request.query.search) {
     return next();
   }
-  return response.send({"meta":{"count":0},"data":[]});
+  return response.send({ data: [] });
 });
 
 // Get a number of Customers

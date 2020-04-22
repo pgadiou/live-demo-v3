@@ -71,7 +71,6 @@ function uploadLegalDoc(companyId, doc, field) {
     .then(() => companies.findByPk(companyId))
     .then((company) => {
       company[field] = id;
-      console.log(`updated ${field})`, company[field]);
       return company.save();
     })
     .catch((e) => e);
@@ -84,14 +83,10 @@ router.post('/actions/upload-legal-docs', permissionMiddlewareCreator.smartActio
   // Get the values of the input fields entered by the admin user.
   const attrs = req.body.data.attributes.values;
   const certificateOfIncorporation = attrs['Certificate of Incorporation'];
-  // const proofOfAddress = attrs['Proof of address'];
-  // const companyBankStatement = attrs['Company bank statement'];
   const passportId = attrs['Valid proof of ID'];
 
   P.all([
     uploadLegalDoc(companyId, certificateOfIncorporation, 'certificateOfIncorporationId'),
-    uploadLegalDoc(companyId, proofOfAddress, 'proofOfAddressId'),
-    uploadLegalDoc(companyId, companyBankStatement,'bankStatementId'),
     uploadLegalDoc(companyId, passportId, 'passportId'),
   ])
     .then(() => {
