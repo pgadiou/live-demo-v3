@@ -18,45 +18,12 @@ const permissionMiddlewareCreator = new PermissionMiddlewareCreator('companies')
 
 // Create a Company
 router.post('/companies', permissionMiddlewareCreator.create(), (request, response, next) => {
-  console.log('======= RECORD CREATION ==============');
-  const recordCreator = new RecordCreator(companies);
-  console.log(request.body);
-  return recordCreator.deserialize(request.body)
-    .then((recordToCreate) => {
-      console.log(recordToCreate);
-      return recordCreator.create(recordToCreate);
-    })
-    .then((record) => {
-      console.log(record);
-      return recordCreator.serialize(record);
-    })
-    .then((recordSerialized) => {
-      console.log(recordSerialized);
-      return response.send(recordSerialized);
-    })
-    .catch(next);
+  next();
 });
 
 // Update a Company
 router.put('/companies/:recordId', permissionMiddlewareCreator.update(), (request, response, next) => {
-  // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#update-a-record
-  console.log('======= RECORD UPDATE ==============');
-  const recordUpdater = new RecordUpdater(companies);
-  console.log(request.body);
-  return recordUpdater.deserialize(request.body)
-    .then((recordToUpdate) => {
-      console.log(recordToUpdate);
-      return recordUpdater.update(recordToUpdate, request.params.recordId);
-    })
-    .then((record) => {
-      console.log(record);
-      return recordUpdater.serialize(record);
-    })
-    .then((recordSerialized) => {
-      console.log(recordSerialized);
-      return response.send(recordSerialized);
-    })
-    .catch(next);
+  next();
 });
 
 // Delete a Company
@@ -67,19 +34,7 @@ router.delete('/companies/:recordId', permissionMiddlewareCreator.delete(), (req
 
 // Get a list of Companies
 router.get('/companies', permissionMiddlewareCreator.list(), (request, response, next) => {
-  console.log('======= RECORD GETTER ==============');
-  const recordsGetter = new RecordsGetter(companies);
-  console.log(request.query);
-  return recordsGetter.getAll(request.query)
-    .then((records) => {
-      return recordsGetter.serialize(records);
-    })
-    .then((recordsSerialized) => {
-      console.log(recordsSerialized);
-      return response.send(recordsSerialized);
-    })
-    .catch(next);
-  // next();
+  next();
 });
 
 // Get a number of Companies
