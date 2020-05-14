@@ -303,35 +303,6 @@
     "onlyForRelationships": false,
     "paginationType": "page",
     "fields": [{
-      "field": "bankStatementId",
-      "type": "String",
-      "defaultValue": null,
-      "enums": null,
-      "integration": null,
-      "isFilterable": true,
-      "isReadOnly": false,
-      "isRequired": false,
-      "isSortable": true,
-      "isVirtual": false,
-      "reference": null,
-      "inverseOf": null,
-      "validations": []
-    }, {
-      "field": "beneficiaryCompanyTransactions",
-      "type": ["Number"],
-      "defaultValue": null,
-      "enums": null,
-      "integration": null,
-      "isFilterable": true,
-      "isReadOnly": false,
-      "isRequired": false,
-      "isSortable": true,
-      "isVirtual": false,
-      "reference": "transactions.beneficiaryCompanyIdKey",
-      "inverseOf": null,
-      "relationship": "HasMany",
-      "validations": []
-    }, {
       "field": "certificateOfIncorporationId",
       "type": "String",
       "defaultValue": null,
@@ -372,21 +343,6 @@
       "isVirtual": false,
       "reference": null,
       "inverseOf": null,
-      "validations": []
-    }, {
-      "field": "emitterCompanyTransactions",
-      "type": ["Number"],
-      "defaultValue": null,
-      "enums": null,
-      "integration": null,
-      "isFilterable": true,
-      "isReadOnly": false,
-      "isRequired": false,
-      "isSortable": true,
-      "isVirtual": false,
-      "reference": "transactions.emitterCompanyIdKey",
-      "inverseOf": null,
-      "relationship": "HasMany",
       "validations": []
     }, {
       "field": "headquarter",
@@ -459,20 +415,6 @@
       "inverseOf": null,
       "validations": []
     }, {
-      "field": "proofOfAddressId",
-      "type": "String",
-      "defaultValue": null,
-      "enums": null,
-      "integration": null,
-      "isFilterable": true,
-      "isReadOnly": false,
-      "isRequired": false,
-      "isSortable": true,
-      "isVirtual": false,
-      "reference": null,
-      "inverseOf": null,
-      "validations": []
-    }, {
       "field": "status",
       "type": "String",
       "defaultValue": null,
@@ -521,26 +463,6 @@
         "position": 0,
         "widget": null
       }, {
-        "field": "Proof of address",
-        "type": "File",
-        "defaultValue": null,
-        "enums": null,
-        "isRequired": true,
-        "reference": null,
-        "description": "(Electricity, Gas, Water, Internet, Landline & Mobile Phone Invoice / Payment Schedule) no older than 3 months of the legal representative of your company",
-        "position": 1,
-        "widget": null
-      }, {
-        "field": "Company bank statement",
-        "type": "File",
-        "defaultValue": null,
-        "enums": null,
-        "isRequired": true,
-        "reference": null,
-        "description": "PDF including company name as well as IBAN",
-        "position": 2,
-        "widget": null
-      }, {
         "field": "Valid proof of ID",
         "type": "File",
         "defaultValue": null,
@@ -548,7 +470,7 @@
         "isRequired": true,
         "reference": null,
         "description": "ID card or passport if the document has been issued in the EU, EFTA, or EEA / ID card or passport + resident permit or driving licence if the document has been issued outside the EU, EFTA, or EEA of the legal representative of your company",
-        "position": 3,
+        "position": 1,
         "widget": null
       }]
     }]
@@ -1056,6 +978,20 @@
     "onlyForRelationships": false,
     "paginationType": "page",
     "fields": [{
+      "field": "buyers",
+      "type": ["String"],
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": false,
+      "isReadOnly": true,
+      "isRequired": false,
+      "isSortable": false,
+      "isVirtual": true,
+      "reference": "customers.id",
+      "inverseOf": null,
+      "validations": []
+    }, {
       "field": "createdAt",
       "type": "Date",
       "defaultValue": null,

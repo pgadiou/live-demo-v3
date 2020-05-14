@@ -1,6 +1,6 @@
 const express = require('express');
-const { PermissionMiddlewareCreator } = require('forest-express-sequelize');
-const { products } = require('../models');
+const { PermissionMiddlewareCreator, RecordsGetter } = require('forest-express-sequelize');
+const { products, customers, orders } = require('../models');
 
 const router = express.Router();
 const permissionMiddlewareCreator = new PermissionMiddlewareCreator('products');
@@ -55,6 +55,34 @@ router.get('/products.csv', permissionMiddlewareCreator.export(), (request, resp
 router.delete('/products', permissionMiddlewareCreator.delete(), (request, response, next) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#delete-a-list-of-records
   next();
+});
+
+router.get('/products/:product_id/relationships/buyers', (request, response, next) => {
+  const productId = request.params.product_id;
+  const limit = parseInt(request.query.page.size, 10) || 20;
+  const offset = (parseInt(request.query.page.number, 10) - 1) * limit;
+  const recordsGetter = new RecordsGetter(customers);
+  const include = [{
+    model: orders,
+    as: 'orders',
+    where: { product_id: productId },
+  }];
+
+  // find the customers for the requested page and page size
+  const findAll = customers.findAll({
+    include,
+    offset,
+    limit,
+  });
+
+  // count all customers for pagination
+  const count = customers.count({ include });
+
+  // resolve the two promises and serialize the response
+  Promise.all([findAll, count])
+    .then(([customersFound, customersCount]) => recordsGetter.serialize(customersFound, { count: customersCount }))
+    .then((recordsSerialized) => response.send(recordsSerialized))
+    .catch(next);
 });
 
 module.exports = router;
