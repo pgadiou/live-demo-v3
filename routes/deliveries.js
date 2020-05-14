@@ -1,6 +1,6 @@
 const express = require('express');
-const { PermissionMiddlewareCreator } = require('forest-express-sequelize');
-const { deliveries } = require('../models');
+const { PermissionMiddlewareCreator, RecordsGetter } = require('forest-express-sequelize');
+const { deliveries, orders } = require('../models');
 
 const router = express.Router();
 const permissionMiddlewareCreator = new PermissionMiddlewareCreator('deliveries');
@@ -55,6 +55,20 @@ router.get('/deliveries.csv', permissionMiddlewareCreator.export(), (request, re
 router.delete('/deliveries', permissionMiddlewareCreator.delete(), (request, response, next) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#delete-a-list-of-records
   next();
+});
+
+router.get('/deliveries/:recordId/relationships/orders', permissionMiddlewareCreator.list(), (request, response, next) => {
+  const newFilter = `{"field":"delivery:id","operator":"equal","value":${request.params.recordId}}`;
+  request.query.filters = newFilter;
+  const ordersGetter = new RecordsGetter(orders);
+  ordersGetter.getAll(request.query)
+    .then(records => ordersGetter.serialize(records))
+    .then(recordsSerialized => response.send(recordsSerialized))
+    .catch(next);
+
+
+
+  // next();
 });
 
 module.exports = router;

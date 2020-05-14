@@ -36,12 +36,6 @@ router.get('/customers', permissionMiddlewareCreator.list(), (request, response,
   return response.send({ data: [] });
 });
 
-// Get a number of Customers
-router.get('/customers/count', permissionMiddlewareCreator.list(), (request, response, next) => {
-  // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#get-a-number-of-records
-  next();
-});
-
 // Get a Customer
 router.get('/customers/:recordId', permissionMiddlewareCreator.details(), (request, response, next) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#get-a-record

@@ -7,6 +7,10 @@ const { collection } = require('forest-express-sequelize');
 // - Smart segments: https://docs.forestadmin.com/documentation/reference-guide/segments/smart-segments
 collection('products', {
   actions: [],
-  fields: [],
+  fields: [{
+    field: 'buyers',
+    type: ['String'],
+    reference: 'customers.id',
+  }],
   segments: [],
 });
