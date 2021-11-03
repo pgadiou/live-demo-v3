@@ -7,6 +7,7 @@ const models = require('../models');
 const uuid = require('uuid/v4');
 const S3Helper = require('../services/s3-helper');
 const P = require('bluebird');
+const superagent = require('superagent');
 
 
 const router = express.Router();
@@ -34,6 +35,22 @@ router.delete('/companies/:recordId', permissionMiddlewareCreator.delete(), (req
 
 // Get a list of Companies
 router.get('/companies', permissionMiddlewareCreator.list(), (request, response, next) => {
+  // console.log(request.user);
+  // const currentUser = request.user;
+  // async function getUsers() {
+  //   try {
+  //     const res = await superagent.get('https://api.forestadmin.com/api/projects/43906/users')
+  //       .set('Authorization', `Bearer ${process.env.FOREST_AUTH_TOKEN}`)
+  //       .set('Content-Type', 'application/json');
+  //     return res.body.data;
+  //   } catch (error) {
+  //     console.log('Error, could not connect successfully to the API =>', error.response.request.response.error.text);
+  //   }
+  // }
+  // const users = await getUsers();
+  // console.log(users);
+  // const { tags } = users.find((element) => element.id === currentUser.id).attributes;
+  // use tags to filter on the data as you please
   next();
 });
 

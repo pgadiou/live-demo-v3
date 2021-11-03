@@ -21,8 +21,11 @@ module.exports = (sequelize, DataTypes) => {
     jsonText: {
       type: DataTypes.STRING,
     },
-    jsonFile: {
-      type: DataTypes.STRING,
+    json: {
+      type: DataTypes.JSONB,
+    },
+    child: {
+      type: DataTypes.JSONB,
     },
   }, {
     tableName: 'sandbox_items',
@@ -33,6 +36,13 @@ module.exports = (sequelize, DataTypes) => {
 
   // This section contains the relationships for this model. See: https://docs.forestadmin.com/documentation/v/v6/reference-guide/relationships#adding-relationships.
   SandboxItems.associate = (models) => {
+     SandboxItems.belongsTo(models.users, {
+      foreignKey: {
+        name: 'userIdKey',
+        field: 'userId',
+      },
+      as: 'user',
+    });
   };
 
   return SandboxItems;

@@ -10,9 +10,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     industry: {
       type: DataTypes.STRING,
+      validate: {
+        isIn: [['foo', 'bar']],
+      },
     },
     headquarter: {
       type: DataTypes.STRING,
+      defaultValue: 'Paris, France',
     },
     status: {
       type: DataTypes.STRING,
@@ -40,20 +44,20 @@ module.exports = (sequelize, DataTypes) => {
 
   // This section contains the relationships for this model. See: https://docs.forestadmin.com/documentation/v/v6/reference-guide/relationships#adding-relationships.
   Companies.associate = (models) => {
-    // Companies.hasMany(models.transactions, {
-    //   foreignKey: {
-    //     name: 'beneficiaryCompanyIdKey',
-    //     field: 'beneficiary_company_id',
-    //   },
-    //   as: 'beneficiaryCompanyTransactions',
-    // });
-    // Companies.hasMany(models.transactions, {
-    //   foreignKey: {
-    //     name: 'emitterCompanyIdKey',
-    //     field: 'emitter_company_id',
-    //   },
-    //   as: 'emitterCompanyTransactions',
-    // });
+    Companies.hasMany(models.transactions, {
+      foreignKey: {
+        name: 'beneficiaryCompanyIdKey',
+        field: 'beneficiary_company_id',
+      },
+      as: 'beneficiaryCompanyTransactions',
+    });
+    Companies.hasMany(models.transactions, {
+      foreignKey: {
+        name: 'emitterCompanyIdKey',
+        field: 'emitter_company_id',
+      },
+      as: 'emitterCompanyTransactions',
+    });
   };
 
   return Companies;

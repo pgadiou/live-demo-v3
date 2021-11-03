@@ -6,7 +6,13 @@ const { collection } = require('forest-express-sequelize');
 // - Smart relationships: https://docs.forestadmin.com/documentation/reference-guide/relationships/create-a-smart-relationship
 // - Smart segments: https://docs.forestadmin.com/documentation/reference-guide/segments/smart-segments
 collection('orders', {
-  actions: [],
+  actions: [
+    {
+      name: 'download orders as csv',
+      type: 'bulk',
+      download: true,
+    },
+  ],
   fields: [],
   segments: [],
 });

@@ -1,6 +1,8 @@
 const express = require('express');
 const { PermissionMiddlewareCreator } = require('forest-express-sequelize');
-const { customers } = require('../models');
+const { orders } = require('../models');
+const exportCustomerOrdersAsCSV = require('../utils/csv-exporter');
+
 
 const router = express.Router();
 const permissionMiddlewareCreator = new PermissionMiddlewareCreator('customers');
@@ -18,6 +20,10 @@ router.post('/customers', permissionMiddlewareCreator.create(), (request, respon
 // Update a Customer
 router.put('/customers/:recordId', permissionMiddlewareCreator.update(), (request, response, next) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#update-a-record
+  // example of smart field with validation in backend
+  if (request.body.data.attributes['must-be-kuku'] !== 'kuku') {
+    return response.status(403).send('should have been kuku!');
+  }
   next();
 });
 
@@ -50,5 +56,15 @@ router.delete('/customers', permissionMiddlewareCreator.delete(), (request, resp
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#delete-a-list-of-records
   next();
 });
+
+router.post('/actions/export-orders-as-csv', permissionMiddlewareCreator.smartAction(), async (req, res) => {
+  // Get the current record id
+  const recordId = req.body.data.attributes.ids[0];
+  // get an array of records that are the orders of the customer
+  const data = await orders.find({ customer: recordId });
+
+  return exportCustomerOrdersAsCSV(res, data);
+});
+
 
 module.exports = router;

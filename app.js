@@ -16,13 +16,12 @@ const {
 const app = express();
 
 app.use(morgan('tiny'));
-app.use(bodyParser({ limit: '200mb' }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-let allowedOrigins = [/\.forestadmin\.com$/ ];
+let allowedOrigins = [/\.forestadmin\.com$/];
 
 if (process.env.CORS_ORIGINS) {
   allowedOrigins = allowedOrigins.concat(process.env.CORS_ORIGINS.split(','));

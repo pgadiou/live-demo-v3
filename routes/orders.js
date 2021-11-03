@@ -30,13 +30,13 @@ router.delete('/orders/:recordId', permissionMiddlewareCreator.delete(), (reques
 // Get a list of Orders
 router.get('/orders', permissionMiddlewareCreator.list(), (request, response, next) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#get-a-list-of-records
+  orders.findOne().then((data) => console.log(data));
   next();
 });
 
 // Get a number of Orders
 router.get('/orders/count', permissionMiddlewareCreator.list(), (request, response, next) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#get-a-number-of-records
-  console.log(request.query);
   next();
 });
 

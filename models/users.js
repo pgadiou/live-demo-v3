@@ -4,33 +4,25 @@ module.exports = (sequelize, DataTypes) => {
   const { Sequelize } = sequelize;
   // This section contains the fields of your model, mapped to your table's columns.
   // Learn more here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/models/enrich-your-models#declaring-a-new-field-in-a-model
-  const Reviews = sequelize.define('reviews', {
-    grade: {
-      type: DataTypes.INTEGER,
+  const Users = sequelize.define('users', {
+    contact: {
+      type: DataTypes.JSONB,
     },
   }, {
-    tableName: 'reviews',
-    timestamps: false,
+    tableName: 'users',
+    underscored: true,
     schema: process.env.DATABASE_SCHEMA,
+    timestamps: false,
   });
-
-  // This section contains the relationships for this model. See: https://docs.forestadmin.com/documentation/v/v6/reference-guide/relationships#adding-relationships.
-  Reviews.associate = (models) => {
-    Reviews.belongsTo(models.orders, {
+  Users.associate = (models) => {
+    Users.hasMany(models.sandboxItems, {
       foreignKey: {
-        name: 'orderRefKey',
-        field: 'order_ref',
+        name: 'userIdKey',
+        field: 'userId',
       },
-      target: {
-        name: 'ref',
-      },
-      as: 'orderRef',
-    });
-
-    Reviews.belongsTo(models.customers, {
-      through: models.orders,
+      as: 'items',
     });
   };
 
-  return Reviews;
+  return Users;
 };

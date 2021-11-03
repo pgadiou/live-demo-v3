@@ -7,6 +7,60 @@ const { collection } = require('forest-express-sequelize');
 // - Smart segments: https://docs.forestadmin.com/documentation/reference-guide/segments/smart-segments
 collection('sandboxItems', {
   actions: [],
-  fields: [],
+  fields: [
+    {
+      field: 'array',
+      type: ['String'],
+      get: (object) => {
+        return ['hello', 'here']
+      }
+    },
+    {
+      field: 'lat',
+      type: 'Number',
+      get: (object) => {
+        return object.json ? object.json.lat : null;
+      },
+      set: (object) => {
+        return object;
+      },
+    }, {
+      field: 'lon',
+      type: 'Number',
+      get: (object) => {
+        return object.json ? object.json.lon : null;
+      },
+      set: (object) => {
+        return object;
+      },
+    }, {
+      field: 'name',
+      type: 'String',
+      get: (object) => {
+        return object.child ? object.child.name : null;
+      },
+      set: (object) => {
+        return object;
+      },
+    }, {
+      field: 'age',
+      type: 'String',
+      get: (object) => {
+        return object.child ? object.child.age : null;
+      },
+      set: (object) => {
+        return object;
+      },
+    }, {
+      field: 'sex',
+      type: 'String',
+      get: (object) => {
+        return object.child ? object.child.sex : null;
+      },
+      set: (object) => {
+        return object;
+      },
+    },
+  ],
   segments: [],
 });

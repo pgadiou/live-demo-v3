@@ -17,6 +17,36 @@ collection('companies', {
         isRequired: true,
       }],
     },
+    {
+      name: 'Change status',
+      // type: 'single',
+      fields: [{
+        field: 'test',
+        type: 'String'}, {
+        field: 'New status',
+        type: 'Enum',
+        isRequired: true,
+        enums: ['Pending', 'Live'],
+      }, {
+        field: 'company info',
+        reference: 'companiesInfo',
+      }],
+      values: (context) => {
+        console.log('hhelloooooo =====>', context)
+        return {
+          'company info': { id: context.id },
+          test: "hllo",
+        };
+      },
+    }, {
+      name: 'Report transaction',
+      type: 'single',
+      fields: [{
+        field: 'transaction info',
+        description: 'enter company id',
+        reference: 'transactionsInfo',
+      }],
+    },
   ],
   fields: [],
   segments: [],
